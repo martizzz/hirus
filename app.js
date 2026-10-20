@@ -137,14 +137,14 @@ async function saveToSupabase(wish, photo) {
   const objectName = `${wish.id}.jpg`;
   const uploadResponse = await fetch(`${config.supabaseUrl}/storage/v1/object/felicitaciones/${objectName}`, {
     method: "POST",
-    headers: { apikey: config.supabaseAnonKey, Authorization: `Bearer ${config.supabaseAnonKey}`, "Content-Type": "image/jpeg", "x-upsert": "false" },
+    headers: supabaseHeaders({ "Content-Type": "image/jpeg", "x-upsert": "false" }),
     body: photo,
   });
   if (!uploadResponse.ok) throw new Error("No se ha podido subir la foto.");
   const photoUrl = `${config.supabaseUrl}/storage/v1/object/public/felicitaciones/${objectName}`;
   const response = await fetch(`${config.supabaseUrl}/rest/v1/felicitaciones`, {
     method: "POST",
-    headers: { apikey: config.supabaseAnonKey, Authorization: `Bearer ${config.supabaseAnonKey}`, "Content-Type": "application/json", Prefer: "return=minimal" },
+    headers: supabaseHeaders({ "Content-Type": "application/json", Prefer: "return=minimal" }),
     body: JSON.stringify({ id: wish.id, author: wish.author, message: wish.message, photo_url: photoUrl }),
   });
   if (!response.ok) throw new Error("No se ha podido guardar el recuerdo.");
@@ -152,10 +152,19 @@ async function saveToSupabase(wish, photo) {
 
 async function fetchFromSupabase() {
   const response = await fetch(`${config.supabaseUrl}/rest/v1/felicitaciones?select=id,author,message,photo_url,created_at&order=created_at.desc`, {
-    headers: { apikey: config.supabaseAnonKey, Authorization: `Bearer ${config.supabaseAnonKey}` },
+    headers: supabaseHeaders(),
   });
   if (!response.ok) throw new Error("No se ha podido cargar el archivo.");
   return response.json();
+}
+
+function supabaseHeaders(extraHeaders = {}) {
+  const headers = { apikey: config.supabaseAnonKey, ...extraHeaders };
+  // Las claves anon antiguas son JWT; las nuevas sb_publishable_* no lo son.
+  if (!config.supabaseAnonKey.startsWith("sb_publishable_")) {
+    headers.Authorization = `Bearer ${config.supabaseAnonKey}`;
+  }
+  return headers;
 }
 
 async function loadWishes() {
