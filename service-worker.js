@@ -1,4 +1,4 @@
-const CACHE_NAME = "hiru-v4";
+const CACHE_NAME = "hiru-v5";
 const ASSETS = ["./", "./index.html", "./styles.css", "./app.js", "./config.js"];
 
 self.addEventListener("install", (event) => {
