@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="description" content="Un archivo de fotografías y mensajes para alguien muy especial." />
+    <title>Para Hiru — Archivo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="manifest" href="manifest.webmanifest" />
+  </head>
+  <body>
+    <main id="galleryView">
+      <div class="gallery" id="memoryGrid" aria-live="polite"></div>
+      <div class="empty-state" id="emptyState" hidden><p>EL ARCHIVO ESTÁ ESPERANDO SU PRIMERA FOTO.</p></div>
+    </main>
+
+    <section class="editor-view" id="uploadView" aria-labelledby="dialogTitle" hidden>
+      <div class="editor-panel">
+        <div class="editor-heading">
+          <div><p class="kicker">ACCESO DE EDICIÓN</p><h1 id="dialogTitle">Nuevo recuerdo</h1></div>
+          <a class="close-button" href="index.html" aria-label="Volver a la galería">×</a>
+        </div>
+
+        <form id="wishForm">
+          <label class="field">
+            <span>01 / NOMBRE</span>
+            <input id="authorInput" name="author" autocomplete="name" maxlength="40" placeholder="Tu nombre" required />
+          </label>
+          <label class="field">
+            <span>02 / MENSAJE</span>
+            <textarea id="messageInput" name="message" rows="4" maxlength="300" placeholder="Escribe unas palabras para ella…" required></textarea>
+            <small><span id="characterCount">0</span> / 300</small>
+          </label>
+          <div class="field">
+            <span>03 / FOTOGRAFÍA</span>
+            <label class="photo-picker" id="photoPicker">
+              <input id="photoInput" name="photo" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" required />
+              <span class="picker-plus" aria-hidden="true">+</span>
+              <strong>SELECCIONAR FOTO</strong>
+              <small>JPG, PNG O WEBP · MÁX. 15 MB</small>
+              <img id="photoPreview" alt="Vista previa de la foto elegida" hidden />
+              <button id="removePhoto" class="remove-photo" type="button" hidden>QUITAR</button>
+            </label>
+          </div>
+          <label class="consent">
+            <input name="consent" type="checkbox" required />
+            <span>Confirmo que puedo compartir esta fotografía en el archivo.</span>
+          </label>
+          <p class="form-error" id="formError" role="alert" hidden></p>
+          <button class="publish-button" id="submitButton" type="submit"><span>PUBLICAR EN EL ARCHIVO</span><span aria-hidden="true">→</span></button>
+        </form>
+      </div>
+    </section>
+
+    <dialog class="lightbox" id="lightbox" aria-label="Fotografía ampliada">
+      <button class="lightbox-close" id="closeLightbox" type="button" aria-label="Cerrar fotografía">×</button>
+      <div class="lightbox-inner">
+        <img id="lightboxImage" alt="" />
+        <div class="lightbox-caption"><p id="lightboxMessage"></p><strong id="lightboxAuthor"></strong></div>
+      </div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <template id="memoryTemplate">
+      <article class="memory-card">
+        <button class="image-button" type="button" aria-label="Ampliar fotografía"><img class="memory-photo" alt="" loading="lazy" /></button>
+        <div class="memory-caption">
+          <p class="memory-message"></p>
+          <div class="memory-meta"><strong class="memory-author"></strong><span class="memory-index"></span></div>
+        </div>
+      </article>
+    </template>
+
+    <script src="config.js"></script>
+    <script src="app.js" defer></script>
+  </body>
+</html>
