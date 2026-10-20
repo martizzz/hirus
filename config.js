@@ -2,6 +2,6 @@
 window.HIRU_CONFIG = {
   celebrantName: "Hiru",
   showStockPhotos: true,
-  supabaseUrl: "",
-  supabaseAnonKey: "",
+  supabaseUrl: "https://bnbgnolvjmwmtrrqwjtv.supabase.co",
+  supabaseAnonKey: "sb_publishable_TfdbMPuRmpVtJq6FDF1yZw_qE-HgQw1",
 };
